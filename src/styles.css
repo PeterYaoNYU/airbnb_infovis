@@ -1,0 +1,19 @@
+body {
+    font-family: Helvetica, Arial, sans-serif
+}
+
+h1 {
+    background-color: #2a5599;
+    color: white;
+    padding: 5px;
+}
+
+svg {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+.mainView {
+    display: flex;
+}
