@@ -7,6 +7,8 @@ import { AirportMap } from "./airportMap";
 import { BarChart } from "./barChart";
 import { AirportBubble} from "./airportBubble";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const csvUrl = 'https://gist.githubusercontent.com/hogwild/9367e694e12bd2616205e4b3e91285d5/raw/9b451dd6bcc148c3553f550c92096a1a58e1e1e5/airline-routes.csv';
 const mapUrl = 'https://gist.githubusercontent.com/hogwild/26558c07f9e4e89306f864412fbdba1d/raw/5458902712c01c79f36dc28db33e345ee71487eb/countries.geo.json';
@@ -61,38 +63,41 @@ function AirlineRoutes(){
     // console.log(airlines);
     // console.log(airports);
     // console.log(routes);
-    return <div>
-        <h1>Airlines Routes</h1>   
-        <div className={"mainView"}>
-            <div>
-                <h2>Airlines</h2>
-                <svg id={"barchart"} width={barchart_width} height={barchart_height}>
-                    <BarChart offsetX={barchart_margin.left} offsetY={barchart_margin.top} 
-                        height={barchart_inner_height} width={barchart_inner_width} data={airlines}
-                        selectedAirline={selectedAirline} setSelectedAirline={setSelectedAirline}
-                    />
-                </svg>
-            </div>
-            <div>
+    
+    return <div className="container">
+        <h1>Airbnb NYC</h1>   
+        <div className="row">
+            <div className="col-md-6">
+                {/* Interactive Map */}
                 <h2>Airports</h2>
-                <svg id={"map"} width={map_width} height={map_height}>
+                <svg id="map" width={map_width} height={map_height}>
                     <AirportMap width={map_width} height={map_height} 
                         countries={map} airports={airports} routes={routes}
                         selectedAirline={selectedAirline}
                     />
                 </svg>
             </div>
-            <div>
-                <h2>The Hubs</h2>
-                <svg id={"bubble"} width={hub_width} height={hub_height}>
-                    <AirportBubble width={hub_width} height={hub_height} 
-                        countries={map}  routes={routes}
-                        selectedAirline={selectedAirline}
-                    />
-                </svg>
-
+            <div className="col-md-6">
+                {/* Info Visualization */}
+                <div>
+                    <h2>Airlines</h2>
+                    <svg id="barchart" width={barchart_width} height={barchart_height}>
+                        <BarChart offsetX={barchart_margin.left} offsetY={barchart_margin.top} 
+                            height={barchart_inner_height} width={barchart_inner_width} data={airlines}
+                            selectedAirline={selectedAirline} setSelectedAirline={setSelectedAirline}
+                        />
+                    </svg>
+                </div>
+                <div>
+                    <h2>The Hubs</h2>
+                    <svg id="bubble" width={hub_width} height={hub_height}>
+                        <AirportBubble width={hub_width} height={hub_height} 
+                            countries={map} routes={routes}
+                            selectedAirline={selectedAirline}
+                        />
+                    </svg>
+                </div>
             </div>
-            
         </div>
     </div>
 }

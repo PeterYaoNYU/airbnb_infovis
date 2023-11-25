@@ -3,9 +3,11 @@ body {
 }
 
 h1 {
-    background-color: #2a5599;
+    background-color: rgb(217, 140, 231);
     color: white;
     padding: 5px;
+    margin: 0px;
+    font: italic;
 }
 
 svg {
