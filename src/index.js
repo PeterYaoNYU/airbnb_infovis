@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { csv, json } from "d3";
 import { groupByAirline, groupByAirport } from "./utils";
 import "./styles.css";
-import { AirportMap } from "./airportMap";
+import { NYCMap } from "./airportMap";
 import { BarChart } from "./barChart";
 import { AirportBubble} from "./airportBubble";
 
@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const csvUrl = 'https://gist.githubusercontent.com/hogwild/9367e694e12bd2616205e4b3e91285d5/raw/9b451dd6bcc148c3553f550c92096a1a58e1e1e5/airline-routes.csv';
-const mapUrl = 'https://gist.githubusercontent.com/hogwild/26558c07f9e4e89306f864412fbdba1d/raw/5458902712c01c79f36dc28db33e345ee71487eb/countries.geo.json';
+const mapUrl = 'https://gist.githubusercontent.com/PeterYaoNYU/22b993fb0580b9eb095711d3d6201aed/raw/047fb2aad52e491d003235dab71d352b7c5ebe92/NYC.geojson';
 
 function useData(csvPath){
     const [dataAll, setData] = React.useState(null);
@@ -63,17 +63,16 @@ function AirlineRoutes(){
     // console.log(airlines);
     // console.log(airports);
     // console.log(routes);
+    console.log(map);
     
     return <div className="container">
         <h1>Airbnb NYC</h1>   
         <div className="row">
             <div className="col-md-6">
-                {/* Interactive Map */}
                 <h2>Airports</h2>
                 <svg id="map" width={map_width} height={map_height}>
-                    <AirportMap width={map_width} height={map_height} 
-                        countries={map} airports={airports} routes={routes}
-                        selectedAirline={selectedAirline}
+                    <NYCMap width={map_width} height={map_height} 
+                        neighborhoods={map}
                     />
                 </svg>
             </div>
