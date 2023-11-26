@@ -23,12 +23,14 @@ svg {
     cursor: pointer; /* Cursor to indicate interactivity */
 }
 
+
 h1 {
     background-color: rgb(217, 140, 231);
-    color: white;
+    color: white; /* This should set your text to white */
     padding: 5px;
     margin: 0px;
-    font: italic;
+    font-family: 'Dancing Script', cursive; /* This is a handwritten-style font */
+    font-weight: 700; /* Optional: Adjust the font weight if necessary */
 }
 
 .mainView {

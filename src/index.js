@@ -67,7 +67,7 @@ function AirlineRoutes(){
     
     return (
     <>
-    <h1>Airbnb NYC</h1>   
+    <h1 style={{ color: 'white', fontFamily: "'Dancing Script', cursive" }}>Airbnb NYC</h1>   
     <div className="container">
         <div className="row">
             <div className="col-md-6">
