@@ -68,13 +68,11 @@ function AirlineRoutes(){
     return (
     <>
     <h1 style={{ color: 'white', fontFamily: "'Dancing Script', cursive" }}>Airbnb NYC</h1>   
-    <div className="container">
-        <div className="row">
-            <div className="col-md-6">
-                    <NYCMap width={map_width} height={map_height} 
-                        neighborhoods={map}
-                    />
-            </div>
+    {/* <div className="container"> */}
+        <div className="row no-gutters">
+                <div className="col-md-6 p-0" style={{ height: '100vh' }}>
+                    <NYCMap width={window.innerWidth / 2} height={window.innerHeight} neighborhoods={map} />
+                </div>
             <div className="col-md-6">
                 {/* Info Visualization */}
                 <div>
@@ -97,7 +95,7 @@ function AirlineRoutes(){
                 </div>
             </div>
         </div>
-    </div>
+    {/* </div> */}
 
     </>
     );
