@@ -47,7 +47,7 @@ function AirlineRoutes(){
     const barchart_margin = { top: 10, bottom: 50, left: 130, right: 10 };
     const barchart_inner_width = barchart_width - barchart_margin.left - barchart_margin.right;
     const barchart_inner_height = barchart_height - barchart_margin.top - barchart_margin.bottom;
-    const map_width = 600;
+    const map_width = 500;
     const map_height = 400;
     const hub_width = 400;
     const hub_height = 400;
@@ -65,16 +65,15 @@ function AirlineRoutes(){
     // console.log(routes);
     console.log(map);
     
-    return <div className="container">
-        <h1>Airbnb NYC</h1>   
+    return (
+    <>
+    <h1>Airbnb NYC</h1>   
+    <div className="container">
         <div className="row">
             <div className="col-md-6">
-                <h2>Airports</h2>
-                <svg id="map" width={map_width} height={map_height}>
                     <NYCMap width={map_width} height={map_height} 
                         neighborhoods={map}
                     />
-                </svg>
             </div>
             <div className="col-md-6">
                 {/* Info Visualization */}
@@ -99,6 +98,9 @@ function AirlineRoutes(){
             </div>
         </div>
     </div>
+
+    </>
+    );
 }
 
 ReactDOM.render(<AirlineRoutes/ >, document.getElementById("root"));

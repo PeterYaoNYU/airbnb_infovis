@@ -2,18 +2,33 @@ body {
     font-family: Helvetica, Arial, sans-serif
 }
 
+
+
+svg {
+    border-width: 1px;
+    border-style: solid;
+    border-color: white;
+}
+
+
+.zoom-buttons button {
+    display: inline-block; /* Ensure the buttons are not set to display: none */
+    position: relative; /* Adjust if necessary for your layout */
+    z-index: 10; /* Ensure buttons are above other elements */
+    background-color: white; /* Background to make them stand out */
+    color: black; /* Text color */
+    border: 1px solid black; /* Border to make them visible */
+    padding: 0.5em 1em; /* Padding to give them size */
+    margin: 0.5em; /* Space around buttons */
+    cursor: pointer; /* Cursor to indicate interactivity */
+}
+
 h1 {
     background-color: rgb(217, 140, 231);
     color: white;
     padding: 5px;
     margin: 0px;
     font: italic;
-}
-
-svg {
-    border-width: 1px;
-    border-style: solid;
-    border-color: black;
 }
 
 .mainView {

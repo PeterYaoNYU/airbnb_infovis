@@ -7,6 +7,9 @@ function NYCMap(props){
     console.log("width", width, "height", height);
     const svgRef = useRef();
 
+    const gRef = useRef();
+
+
     // Setup the projection
     const projection = geoMercator()
         .fitSize([width, height], neighborhoods)
@@ -19,45 +22,50 @@ function NYCMap(props){
     console.log("geojso>>>")
     console.log(neighborhoods.features)
 
-    // // Define zoom behavior
-    // const handleZoom = zoom()
-    //     .scaleExtent([1, 8])
-    //     .on("zoom", (e) => {
-    //         select(svgRef.current).selectAll('path').attr('transform', e.transform);
-    //     });
+    const zoomBehavior = zoom()
+        .scaleExtent([1, 8]) // Limits zooming in and out
+        .on("zoom", (event) => {
+            const { transform } = event;
+            select(gRef.current).attr("transform", transform);
+        });
+
+    useEffect(() => {
+            select(svgRef.current)
+                .call(zoomBehavior);
+        }, [zoomBehavior]);
+
+    const zoomIn = () => {
+        zoomBehavior.scaleBy(select(svgRef.current), 1.2); // 20% zoom in
+    };
+
+    const zoomOut = () => {
+        zoomBehavior.scaleBy(select(svgRef.current), 0.8); // 20% zoom out
+    };
 
     // // Apply zoom behavior to the SVG
     // useEffect(() => {
     //     select(svgRef.current).call(handleZoom);
     // }, []);
-
     return (
-            <g>
-                {
-                    neighborhoods.features.map(feature => {
-                        const neighborhood_name = feature.properties.neighbourhood;
-                        console.log(neighborhood_name)
-                        const neighborhood_group = feature.properties.neighbourhood_group;
-                        return (
-                            <path
-                                key={neighborhood_name}
-                                d={pathGenerator(feature)}
-                                fill={"#eee"}
-                                stroke={"#ccc"}
-                                strokeWidth={0.5}
-                                onMouseOver={e => {
-                                    e.target.style.fill = "#2a5599";
-                                }}
-                                onMouseOut={e => {
-                                    e.target.style.fill = "#eee";
-                                }}
-                            />
-                        );
-                    }
-                    )
-                }
-                {/* Add other SVG elements like circles for listings here */}
-            </g>
+        <>
+            <svg ref={svgRef} width={width} height={height}>
+                <g ref={gRef}>
+                    {neighborhoods.features.map((feature, i) => (
+                        <path
+                            key={i}
+                            d={pathGenerator(feature)}
+                            fill={"#eee"}
+                            stroke={"#ccc"}
+                            strokeWidth={0.5}
+                        />
+                    ))}
+                </g>
+            </svg>
+            <div className="zoom-buttons">
+                <button onClick={zoomIn}>+</button>
+                <button onClick={zoomOut}>-</button>
+            </div>
+        </>
     );
 }
 
