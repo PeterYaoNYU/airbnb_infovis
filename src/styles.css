@@ -33,6 +33,27 @@ h1 {
     font-weight: 700; /* Optional: Adjust the font weight if necessary */
 }
 
+.map-container {
+    position: relative;
+}
+
+.zoom-buttons {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.zoom-buttons button {
+    background-color: #fff;
+    border: 5px solid #ccc;
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+
 .mainView {
     display: flex;
 }
