@@ -6,12 +6,15 @@ import "./styles.css";
 import { NYCMap } from "./airportMap";
 import { BarChart } from "./barChart";
 import { AirportBubble} from "./airportBubble";
+import {GoogleMap} from "./NYCMap";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const csvUrl = 'https://gist.githubusercontent.com/hogwild/9367e694e12bd2616205e4b3e91285d5/raw/9b451dd6bcc148c3553f550c92096a1a58e1e1e5/airline-routes.csv';
 const mapUrl = 'https://gist.githubusercontent.com/PeterYaoNYU/22b993fb0580b9eb095711d3d6201aed/raw/047fb2aad52e491d003235dab71d352b7c5ebe92/NYC.geojson';
+
+const listingUrl = 'https://gist.githubusercontent.com/PeterYaoNYU/08410ffe72186aa7b2fd44522b51c0fd/raw/8cd22db0353c31baaabf06ac0eb83d0adbbb0c57/listing.csv'
 
 function useData(csvPath){
     const [dataAll, setData] = React.useState(null);
@@ -71,7 +74,8 @@ function AirlineRoutes(){
     {/* <div className="container"> */}
         <div className="row no-gutters">
                 <div className="col-md-6 p-0" style={{ height: '100vh' }}>
-                    <NYCMap width={window.innerWidth / 2} height={window.innerHeight} neighborhoods={map} />
+                    {/* <NYCMap width={window.innerWidth / 2} height={window.innerHeight} neighborhoods={map} /> */}
+                    <GoogleMap apikey={"AIzaSyC9S-iJQ8QRS7DTKBnKvPDsPSHFiCgl42Q"} />
                 </div>
             <div className="col-md-6">
                 {/* Info Visualization */}
