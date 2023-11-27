@@ -29,7 +29,7 @@ const GoogleMap = ({ apikey, listings }) => {
   useEffect(() => {
     if (googleMap && listings) {
       // Create an InfoWindow instance inside the useEffect hook
-      const infoWindow = new window.google.maps.InfoWindow();
+      const infoWindow = new window.google.maps.InfoWindow({disableAutoPan: true,});
 
       listings.forEach(listing => {
         let color = listing.room_type === 'Private room' ? '#00FF00' : '#FF0000';
@@ -55,8 +55,44 @@ const GoogleMap = ({ apikey, listings }) => {
 
         circle.addListener('mouseover', () => {
           infoWindow.setContent(contentString);
-          infoWindow.setPosition(circle.getCenter());
+          // infoWindow.setPosition(circle.getCenter());
+          infoWindow.setPosition({ lat: listing.latitude, lng: listing.longitude });
           infoWindow.open(googleMap);
+
+          const bounds = googleMap.getBounds();
+          // console.log(bounds);
+          if (bounds) {
+            // Calculate the pixel location of the circle
+            const circlePos = circle.getCenter();
+            const circlePosPx = googleMap.getProjection().fromLatLngToPoint(circlePos);
+
+            // Define the pixel size of the InfoWindow (you might need to adjust this)
+            const IW_WIDTH_PX = 200;
+            const IW_HEIGHT_PX = 200;
+
+            // Calculate the pixel bounds of the map
+            const mapNE = bounds.getNorthEast();
+            const mapSW = bounds.getSouthWest();
+            const mapNEPx = googleMap.getProjection().fromLatLngToPoint(mapNE);
+            const mapSWPx = googleMap.getProjection().fromLatLngToPoint(mapSW);
+
+            // Calculate if the InfoWindow will be out of bounds
+            const IWOffsetX = circlePosPx.x + IW_WIDTH_PX * (1 / Math.pow(2, googleMap.getZoom()));
+            const IWOffsetY = circlePosPx.y - IW_HEIGHT_PX * (1 / Math.pow(2, googleMap.getZoom()));
+
+            // Create a new bounds object to potentially pan to
+            let newBounds = bounds;
+
+            // Check if the InfoWindow goes out of the current bounds and adjust if necessary
+            if (IWOffsetX > mapNEPx.x || IWOffsetY < mapNEPx.y) {
+              // Convert the modified pixel points back to LatLng
+              const newNE = googleMap.getProjection().fromPointToLatLng(new google.maps.Point(IWOffsetX, IWOffsetY));
+              // Extend the bounds to include the new point
+              newBounds = newBounds.extend(newNE);
+              // Pan the map to the new bounds
+              googleMap.panToBounds(newBounds);
+            }
+          }
         });
 
         circle.addListener('mouseout', () => {
