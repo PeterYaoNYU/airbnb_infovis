@@ -49,6 +49,28 @@ function useMap(jsonPath) {
     return data;
 }
 
+const useNeighborhoods = (csvPath) => {
+    const [neighborhoods, setNeighborhoods] = useState(null);
+
+  
+    useEffect(() => {
+      csv(csvPath).then(data => {
+        const grouped = data.reduce((acc, row) => {
+          if (!acc[row.neighbourhood_group]) {
+            acc[row.neighbourhood_group] = [];
+          }
+          acc[row.neighbourhood_group].push(row.neighbourhood);
+          return acc;
+        }, {});
+        setNeighborhoods(grouped);
+      });
+    }, [csvPath]);
+  
+    return neighborhoods;
+  };
+
+
+
 function AirlineRoutes(){
     const barchart_width = 350;
     const barchart_height = 400;
@@ -63,6 +85,16 @@ function AirlineRoutes(){
 
 
     const listings = useData(listingUrl);
+
+    const neighborhoods = useNeighborhoods(neighborhoodsUrl);
+
+    if (!listings || !neighborhoods) {
+        return <pre>Loading...</pre>;
+    };
+    console.log("checking");
+
+    console.log(neighborhoods);
+
     
     return (
     <>
@@ -74,7 +106,7 @@ function AirlineRoutes(){
                     <GoogleMap apikey={"AIzaSyC9S-iJQ8QRS7DTKBnKvPDsPSHFiCgl42Q"} listings={listings}/>
                 </div>
             <div className="col-md-6">
-                <Sidebar setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} listings={listings}/>
+                <Sidebar setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} listings={listings} neighborhoods={neighborhoods} />
             </div>
         </div>
     {/* </div> */}
