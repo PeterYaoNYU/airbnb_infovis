@@ -4,6 +4,8 @@ const GoogleMap = ({ apikey, listings }) => {
   const googleMapRef = useRef(null);
   const [googleMap, setGoogleMap] = useState(null);
 
+  console.log(listings)
+
   const nyuCoordinates = { lat: 40.7291, lng: -73.9965 };
 
   useEffect(() => {
@@ -67,7 +69,7 @@ const GoogleMap = ({ apikey, listings }) => {
   return (
     <div
       ref={googleMapRef}
-      style={{ width: '100%', height: '100vh' }}
+      style={{ width: '100%', height: '96vh' }}
     />
   );
 };

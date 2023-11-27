@@ -7,6 +7,7 @@ import { NYCMap } from "./airportMap";
 import { BarChart } from "./barChart";
 import { AirportBubble} from "./airportBubble";
 import {GoogleMap} from "./NYCMap";
+import {Sidebar} from "./sidebar";
 
 import 'bootstrap/dist/css/bootstrap.min.css';2
 
@@ -15,6 +16,8 @@ const csvUrl = 'https://gist.githubusercontent.com/hogwild/9367e694e12bd2616205e
 // const mapUrl = 'https://gist.githubusercontent.com/PeterYaoNYU/22b993fb0580b9eb095711d3d6201aed/raw/047fb2aad52e491d003235dab71d352b7c5ebe92/NYC.geojson';
 
 const listingUrl = 'https://gist.githubusercontent.com/PeterYaoNYU/f52c090f44ebb653a6d49beb6a0118b0/raw/c163d939bd5d47fbef404dc03fb87266adcf1a98/reduced_listings.csv'
+
+const neighborhoodsUrl = 'https://gist.githubusercontent.com/PeterYaoNYU/20695743371e62241b1f45ba2d99ffee/raw/c527ebbd6175ecd63d35ce8c4ab2e5dcb6f7e36f/neighborhoods.csv'
 
 
 function useData(csvPath) {
@@ -46,9 +49,7 @@ function useMap(jsonPath) {
     return data;
 }
 
-
 function AirlineRoutes(){
-    const [selectedAirline, setSelectedAirline]=React.useState(null);
     const barchart_width = 350;
     const barchart_height = 400;
     const barchart_margin = { top: 10, bottom: 50, left: 130, right: 10 };
@@ -58,21 +59,10 @@ function AirlineRoutes(){
     const map_height = 400;
     const hub_width = 400;
     const hub_height = 400;
+    const [selectedRegion, setSelectedRegion] = React.useState(null);
 
-    // const routes = useData(csvUrl);
-    // const map = useMap(mapUrl);
 
     const listings = useData(listingUrl);
-    
-    // if (!map) {
-    //     return <pre>Loading...</pre>;
-    // };
-    // let airlines = groupByAirline(routes);
-    // let airports = groupByAirport(routes);
-    // console.log(airlines);
-    // console.log(airports);
-    // console.log(routes);
-    // console.log(map);
     
     return (
     <>
@@ -84,25 +74,7 @@ function AirlineRoutes(){
                     <GoogleMap apikey={"AIzaSyC9S-iJQ8QRS7DTKBnKvPDsPSHFiCgl42Q"} listings={listings}/>
                 </div>
             <div className="col-md-6">
-                {/* Info Visualization
-                <div>
-                    <h2>Airlines</h2>
-                    <svg id="barchart" width={barchart_width} height={barchart_height}>
-                        <BarChart offsetX={barchart_margin.left} offsetY={barchart_margin.top} 
-                            height={barchart_inner_height} width={barchart_inner_width} data={airlines}
-                            selectedAirline={selectedAirline} setSelectedAirline={setSelectedAirline}
-                        />
-                    </svg>
-                </div>
-                <div>
-                    <h2>The Hubs</h2>
-                    <svg id="bubble" width={hub_width} height={hub_height}>
-                        <AirportBubble width={hub_width} height={hub_height} 
-                            countries={map} routes={routes}
-                            selectedAirline={selectedAirline}
-                        />
-                    </svg>
-                </div> */}
+                <Sidebar setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} listings={listings}/>
             </div>
         </div>
     {/* </div> */}
