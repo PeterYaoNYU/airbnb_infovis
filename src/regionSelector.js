@@ -42,11 +42,11 @@ return (
         onChange={handleSelectChange}
         style={{ maxWidth: '300px' }} // Adjust width as needed
       >
-        <option value="Manhatten">Manhattan</option>
-        <option value="Brooklyn">Brooklyn</option>
-        <option value="Queens">Queens</option>
-        <option value="Bronx">Bronx</option>
-        <option value="Staten Island">Staten Island</option>
+        <option className="fw-bold" value="Manhatten">Manhattan</option>
+        <option className="fw-bold" value="Brooklyn">Brooklyn</option>
+        <option className="fw-bold" value="Queens">Queens</option>
+        <option className="fw-bold" value="Bronx">Bronx</option>
+        <option className="fw-bold" value="Staten Island">Staten Island</option>
 
 
         {Object.entries(neighborhoods).map(([group, neighborhoods]) => (
