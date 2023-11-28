@@ -112,7 +112,8 @@ const GoogleMap = ({ apikey, listings, selectedRegion, regionGeoJSON }) => {
       googleMap.data.setStyle({
         strokeWeight: 3, 
         strokeColor: '#000000', // Set the border color to black or any other color
-        fillOpacity: 0 // Make the fill transparent
+        fillOpacity: 0, // Make the fill transparent
+        zIndex: -1 //to the bottom!
       });
     }
   }, [googleMap, regionGeoJSON]);
