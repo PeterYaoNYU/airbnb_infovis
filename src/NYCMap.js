@@ -40,6 +40,8 @@ const GoogleMap = ({ apikey, listings, selectedRegion, regionGeoJSON }) => {
           fillColor: color,
           fillOpacity: 0.35,
           map: googleMap,
+          // this brings the circle to the front of all the other layers, include the polygons, and ensures interactivity. 
+          zIndex: google.maps.Marker.MAX_ZINDEX + 10,
           center: { lat: listing.latitude, lng: listing.longitude },
           radius: 10,
         });
@@ -106,6 +108,12 @@ const GoogleMap = ({ apikey, listings, selectedRegion, regionGeoJSON }) => {
   useEffect(() => {
     if (googleMap && regionGeoJSON) {
       googleMap.data.addGeoJson(regionGeoJSON);
+
+      googleMap.data.setStyle({
+        strokeWeight: 3, 
+        strokeColor: '#000000', // Set the border color to black or any other color
+        fillOpacity: 0 // Make the fill transparent
+      });
     }
   }, [googleMap, regionGeoJSON]);
 
