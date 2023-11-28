@@ -42,7 +42,7 @@ return (
         onChange={handleSelectChange}
         style={{ maxWidth: '300px' }} // Adjust width as needed
       >
-        <option className="fw-bold" value="Manhatten">Manhattan</option>
+        <option className="fw-bold" value="Manhattan">Manhattan</option>
         <option className="fw-bold" value="Brooklyn">Brooklyn</option>
         <option className="fw-bold" value="Queens">Queens</option>
         <option className="fw-bold" value="Bronx">Bronx</option>

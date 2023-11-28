@@ -110,7 +110,7 @@ const GoogleMap = ({ apikey, listings, selectedRegion, regionGeoJSON }) => {
       googleMap.data.addGeoJson(regionGeoJSON);
 
       googleMap.data.setStyle({
-        strokeWeight: 3, 
+        strokeWeight: 2, 
         strokeColor: '#000000', // Set the border color to black or any other color
         fillOpacity: 0, // Make the fill transparent
         zIndex: -1 //to the bottom!
@@ -120,25 +120,62 @@ const GoogleMap = ({ apikey, listings, selectedRegion, regionGeoJSON }) => {
 
 
 
+  // useEffect(() => {
+  //   if (googleMap && selectedRegion && regionGeoJSON) {
+  //     // Find the feature in the GeoJSON that matches the selected region
+  //     const feature = regionGeoJSON.features.find(
+  //       f => f.properties.neighbourhood === selectedRegion
+  //     );
+  
+  //     if (feature) {
+  //       // Define the bounds
+  //       const bounds = new window.google.maps.LatLngBounds();
+        
+  //       // Process the geometry of the selected feature to extend the bounds
+  //       processPoints(feature.geometry, bounds.extend, bounds);
+  
+  //       // Fit the map to the bounds
+  //       googleMap.fitBounds(bounds);
+  //     }
+  //   }
+  // }, [googleMap, selectedRegion, regionGeoJSON]);
+
   useEffect(() => {
     if (googleMap && selectedRegion && regionGeoJSON) {
-      // Find the feature in the GeoJSON that matches the selected region
-      const feature = regionGeoJSON.features.find(
-        f => f.properties.neighbourhood === selectedRegion
-      );
+      // Aggregate neighborhoods by borough (neighbourhood_group)
+      const boroughGeometries = regionGeoJSON.features
+        .filter(f => f.properties.neighbourhood_group === selectedRegion)
+        .map(f => f.geometry);
   
-      if (feature) {
-        // Define the bounds
-        const bounds = new window.google.maps.LatLngBounds();
-        
-        // Process the geometry of the selected feature to extend the bounds
-        processPoints(feature.geometry, bounds.extend, bounds);
+      // Create a LatLngBounds object
+      const bounds = new window.google.maps.LatLngBounds();
+      
+      // Extend the bounds to include each neighborhood's geometry
+      boroughGeometries.forEach(geometry => {
+        processPoints(geometry, bounds.extend, bounds);
+      });
   
-        // Fit the map to the bounds
+      // If there are geometries to include, fit the map to the bounds
+      if (boroughGeometries.length > 0) {
         googleMap.fitBounds(bounds);
+      } else {
+        // If no geometries were found, this means the selected region may be a neighborhood
+        // Find the feature in the GeoJSON that matches the selected region
+        const feature = regionGeoJSON.features.find(
+          f => f.properties.neighbourhood === selectedRegion
+        );
+  
+        if (feature) {
+          // Process the geometry of the selected feature to extend the bounds
+          processPoints(feature.geometry, bounds.extend, bounds);
+  
+          // Fit the map to the bounds
+          googleMap.fitBounds(bounds);
+        }
       }
     }
   }, [googleMap, selectedRegion, regionGeoJSON]);
+  
 
 
   // Helper function to process geometries and extend bounds
