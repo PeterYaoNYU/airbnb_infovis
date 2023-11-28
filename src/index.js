@@ -13,7 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';2
 
 
 const csvUrl = 'https://gist.githubusercontent.com/hogwild/9367e694e12bd2616205e4b3e91285d5/raw/9b451dd6bcc148c3553f550c92096a1a58e1e1e5/airline-routes.csv';
-// const mapUrl = 'https://gist.githubusercontent.com/PeterYaoNYU/22b993fb0580b9eb095711d3d6201aed/raw/047fb2aad52e491d003235dab71d352b7c5ebe92/NYC.geojson';
+const mapUrl = 'https://gist.githubusercontent.com/PeterYaoNYU/22b993fb0580b9eb095711d3d6201aed/raw/047fb2aad52e491d003235dab71d352b7c5ebe92/NYC.geojson';
 
 const listingUrl = 'https://gist.githubusercontent.com/PeterYaoNYU/f52c090f44ebb653a6d49beb6a0118b0/raw/c163d939bd5d47fbef404dc03fb87266adcf1a98/reduced_listings.csv'
 
@@ -71,7 +71,7 @@ const useNeighborhoods = (csvPath) => {
 
 
 
-function AirlineRoutes(){
+function Airbnb(){
     const barchart_width = 350;
     const barchart_height = 400;
     const barchart_margin = { top: 10, bottom: 50, left: 130, right: 10 };
@@ -88,7 +88,9 @@ function AirlineRoutes(){
 
     const neighborhoods = useNeighborhoods(neighborhoodsUrl);
 
-    if (!listings || !neighborhoods) {
+    const maps = useMap(mapUrl);
+
+    if (!listings || !neighborhoods || !maps) {
         return <pre>Loading...</pre>;
     };
     console.log("checking");
@@ -103,10 +105,10 @@ function AirlineRoutes(){
         <div className="row no-gutters">
                 <div className="col-md-6 p-0" style={{ height: '100vh' }}>
                     {/* <NYCMap width={window.innerWidth / 2} height={window.innerHeight} neighborhoods={map} /> */}
-                    <GoogleMap apikey={"AIzaSyC9S-iJQ8QRS7DTKBnKvPDsPSHFiCgl42Q"} listings={listings}/>
+                    <GoogleMap apikey={"AIzaSyC9S-iJQ8QRS7DTKBnKvPDsPSHFiCgl42Q"} listings={listings} selectedRegion={selectedRegion} regionGeoJSON={maps} />
                 </div>
             <div className="col-md-6">
-                <Sidebar setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} listings={listings} neighborhoods={neighborhoods} />
+                <Sidebar setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} listings={listings} neighborhoods={neighborhoods}/>
             </div>
         </div>
     {/* </div> */}
@@ -115,4 +117,4 @@ function AirlineRoutes(){
     );
 }
 
-ReactDOM.render(<AirlineRoutes/ >, document.getElementById("root"));
+ReactDOM.render(<Airbnb/ >, document.getElementById("root"));

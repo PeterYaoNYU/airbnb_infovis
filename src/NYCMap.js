@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const GoogleMap = ({ apikey, listings }) => {
+const GoogleMap = ({ apikey, listings, selectedRegion, regionGeoJSON }) => {
   const googleMapRef = useRef(null);
   const [googleMap, setGoogleMap] = useState(null);
 
@@ -101,6 +101,68 @@ const GoogleMap = ({ apikey, listings }) => {
       });
     }
   }, [googleMap, listings]);
+
+  // Load the GeoJSON data
+  useEffect(() => {
+    if (googleMap && regionGeoJSON) {
+      googleMap.data.addGeoJson(regionGeoJSON);
+    }
+  }, [googleMap, regionGeoJSON]);
+
+
+
+  useEffect(() => {
+    if (googleMap && selectedRegion && regionGeoJSON) {
+      // Find the feature in the GeoJSON that matches the selected region
+      const feature = regionGeoJSON.features.find(
+        f => f.properties.neighbourhood === selectedRegion
+      );
+  
+      if (feature) {
+        // Define the bounds
+        const bounds = new window.google.maps.LatLngBounds();
+        
+        // Process the geometry of the selected feature to extend the bounds
+        processPoints(feature.geometry, bounds.extend, bounds);
+  
+        // Fit the map to the bounds
+        googleMap.fitBounds(bounds);
+      }
+    }
+  }, [googleMap, selectedRegion, regionGeoJSON]);
+
+
+  // Helper function to process geometries and extend bounds
+  function processPoints(geometry, callback, thisArg) {
+    if (geometry instanceof window.google.maps.LatLng) {
+      callback.call(thisArg, geometry);
+    } else if (geometry.type === 'Point') {
+      const latLng = new window.google.maps.LatLng(geometry.coordinates[1], geometry.coordinates[0]);
+      callback.call(thisArg, latLng);
+    } else if (geometry.type === 'MultiPoint' || geometry.type === 'LineString') {
+      geometry.coordinates.forEach(coord => {
+        callback.call(thisArg, new window.google.maps.LatLng(coord[1], coord[0]));
+      });
+    } else if (geometry.type === 'MultiLineString' || geometry.type === 'Polygon') {
+      geometry.coordinates.forEach(path => {
+        path.forEach(coord => {
+          callback.call(thisArg, new window.google.maps.LatLng(coord[1], coord[0]));
+        });
+      });
+    } else if (geometry.type === 'MultiPolygon') {
+      geometry.coordinates.forEach(polygon => {
+        polygon.forEach(path => {
+          path.forEach(coord => {
+            callback.call(thisArg, new window.google.maps.LatLng(coord[1], coord[0]));
+          });
+        });
+      });
+    } else if (geometry.type === 'GeometryCollection') {
+      geometry.geometries.forEach(g => {
+        processPoints(g, callback, thisArg);
+      });
+    }
+  }
 
   return (
     <div
