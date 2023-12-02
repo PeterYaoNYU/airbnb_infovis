@@ -5,6 +5,8 @@ import { RegionSelector } from './regionSelector';
 
 import { ListingSummary } from './listingSummary';
 
+import { ListingCount } from './listingCount';  
+
 
 const Sidebar = ({setSelectedRegion, selectedRegion, listings, neighborhoods}) => {
     // Replace the content below with your actual sidebar content
@@ -12,20 +14,29 @@ const Sidebar = ({setSelectedRegion, selectedRegion, listings, neighborhoods}) =
     console.log(neighborhoods)
     return (
         <div style={{ maxHeight: '100vh', overflowY: 'auto' }}>
-          {/* Sticky Region Selector at the top */}
-          <div className="sticky-top" style={{ backgroundColor: '#f8f9fa', zIndex: 1020, top: 0, paddingBottom: '1rem' }}>
-            <div className="p-4">
-              <h2>New York City</h2>
-              <RegionSelector neighborhoods={neighborhoods} setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} />
+          {/* Sticky top bar with Region Selector and Listing Count */}
+          <div className="sticky-top bg-light py-2" style={{ zIndex: 1020 }}>
+            <div className="container">
+              <div className="row align-items-center">
+                <div className="col">
+                  <h2 className="mb-0">New York City</h2> {/* Adjust styles as needed */}
+                </div>
+                <div className="col">
+                  <RegionSelector neighborhoods={neighborhoods} setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} />
+                </div>
+                <div className="col text-end">
+                  <ListingCount listings={listings} selectedRegion={selectedRegion} />
+                </div>
+              </div>
             </div>
           </div>
     
           {/* Scrollable Listing Summary */}
-          <div style={{ paddingTop: '1rem' }}>
+          <div className="pt-3">
             <ListingSummary listings={listings} selectedRegion={selectedRegion} />
           </div>
         </div>
-      );
+    );
   };
 
 

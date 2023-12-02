@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 const ListingSummary = ({ listings, selectedRegion }) => {
   // Filter listings for the selected region
@@ -29,6 +29,14 @@ const ListingSummary = ({ listings, selectedRegion }) => {
     return acc;
   }, {});
 
+
+    // Function to determine bar color based on room_type
+    const getBarColor = (roomType) => {
+        if (roomType === 'Entire home/apt') return '#FF0000'; // Red color for Entire home/apt
+        if (roomType === 'Private room') return '#00FF00'; // Green color for Private room
+        return '#8884d8'; // Default color for other types
+      };
+
   // Convert roomTypeCounts to array suitable for bar chart
   const chartData = Object.keys(roomTypeCounts).map(roomType => ({
     name: roomType,
@@ -39,7 +47,7 @@ const ListingSummary = ({ listings, selectedRegion }) => {
     <div className="row">
         {/* Total Listings on the left */}
         <div className="col-md-4">
-            <h2>Total Listings: {totalListings}</h2>
+            {/* <h2>Total Listings: {totalListings}</h2> */}
         </div>
         
         {/* Bar Chart on the right */}
@@ -49,7 +57,13 @@ const ListingSummary = ({ listings, selectedRegion }) => {
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="count" fill="#8884d8" />
+                    <Bar dataKey="count">
+                        {
+                            chartData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={getBarColor(entry.name)} />
+                            ))
+                        }
+                    </Bar>
                 </BarChart>
             </ResponsiveContainer>
         </div>
