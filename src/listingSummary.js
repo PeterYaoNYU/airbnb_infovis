@@ -44,31 +44,31 @@ const ListingSummary = ({ listings, selectedRegion }) => {
   }));
 
   return (
-    <div className="row">
-        {/* Total Listings on the left */}
-        <div className="col-md-4">
-            {/* <h2>Total Listings: {totalListings}</h2> */}
-        </div>
-        
-        {/* Bar Chart on the right */}
-        <div className="col-md-8">
-            <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={chartData}>
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count">
-                        {
-                            chartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={getBarColor(entry.name)} />
-                            ))
-                        }
-                    </Bar>
-                </BarChart>
-            </ResponsiveContainer>
-        </div>
+    <div className="d-flex align-items-center"> {/* Use flexbox to align items at the start */}
+      {/* Textual Explanation */}
+      <div className="text-explanation p-3" style={{ flex: '1', marginRight: '20px', background: '#f5f5f5', borderRadius: '5px' }}>
+        <h4>Room Type</h4>
+        <p>This is a breakdown of the proportion of different room types in your selected region</p>
+        <p>It is a high-level guide about what room type you should provide</p>
+      </div>
+      
+      {/* Bar Chart */}
+      <div style={{ flex: '2' }}> {/* Flex value can be adjusted for desired width */}
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={chartData}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="count">
+              {chartData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={getBarColor(entry.name)} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
-);
+  );
 };
 
 export {ListingSummary};
