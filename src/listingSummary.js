@@ -36,18 +36,25 @@ const ListingSummary = ({ listings, selectedRegion }) => {
   }));
 
   return (
-    <div className="listing-summary">
-      <h2>Total Listings: {totalListings}</h2>
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="count" fill="#8884d8" />
-        </BarChart>
-      </ResponsiveContainer>
+    <div className="row">
+        {/* Total Listings on the left */}
+        <div className="col-md-4">
+            <h2>Total Listings: {totalListings}</h2>
+        </div>
+        
+        {/* Bar Chart on the right */}
+        <div className="col-md-8">
+            <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={chartData}>
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#8884d8" />
+                </BarChart>
+            </ResponsiveContainer>
+        </div>
     </div>
-  );
+);
 };
 
 export {ListingSummary};

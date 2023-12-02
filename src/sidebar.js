@@ -11,16 +11,21 @@ const Sidebar = ({setSelectedRegion, selectedRegion, listings, neighborhoods}) =
 
     console.log(neighborhoods)
     return (
-      <div className="overflow-auto" style={{ maxHeight: '100vh' }}>
-        <div className="p-4">
-          <h2>New York City</h2>
-          {/* Your filters, stats, and other sidebar content go here */}
-        <RegionSelector neighborhoods={neighborhoods} setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} />
-        <ListingSummary listings={listings} selectedRegion={selectedRegion} />
-
+        <div style={{ maxHeight: '100vh', overflowY: 'auto' }}>
+          {/* Sticky Region Selector at the top */}
+          <div className="sticky-top" style={{ backgroundColor: '#f8f9fa', zIndex: 1020, top: 0, paddingBottom: '1rem' }}>
+            <div className="p-4">
+              <h2>New York City</h2>
+              <RegionSelector neighborhoods={neighborhoods} setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} />
+            </div>
+          </div>
+    
+          {/* Scrollable Listing Summary */}
+          <div style={{ paddingTop: '1rem' }}>
+            <ListingSummary listings={listings} selectedRegion={selectedRegion} />
+          </div>
         </div>
-      </div>
-    );
+      );
   };
 
 
