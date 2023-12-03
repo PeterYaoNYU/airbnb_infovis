@@ -4,7 +4,7 @@ const GoogleMap = ({ apikey, listings, selectedRegion, regionGeoJSON }) => {
   const googleMapRef = useRef(null);
   const [googleMap, setGoogleMap] = useState(null);
 
-  console.log(listings)
+  // console.log(listings)
 
   const nyuCoordinates = { lat: 40.7291, lng: -73.9965 };
 
