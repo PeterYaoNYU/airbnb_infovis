@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { csv, json } from "d3";
-import { groupByAirline, groupByAirport } from "./utils";
 import "./styles.css";
-import { NYCMap } from "./airportMap";
-import { BarChart } from "./barChart";
-import { AirportBubble} from "./airportBubble";
-import {GoogleMap} from "./NYCMap";
-import {Sidebar} from "./sidebar";
+import { GoogleMap } from "./NYCMap";
+import { Sidebar } from "./sidebar";
 
-import 'bootstrap/dist/css/bootstrap.min.css';2
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const csvUrl = 'https://gist.githubusercontent.com/hogwild/9367e694e12bd2616205e4b3e91285d5/raw/9b451dd6bcc148c3553f550c92096a1a58e1e1e5/airline-routes.csv';
@@ -21,100 +17,88 @@ const neighborhoodsUrl = 'https://gist.githubusercontent.com/PeterYaoNYU/2069574
 
 
 function useData(csvPath) {
-    const [dataAll, setData] = useState(null);
-  
-    useEffect(() => {
-      csv(csvPath).then(data => {
-        data.forEach(d => {
-          // Convert latitude and longitude from strings to numbers
-          d.latitude = +d.latitude;
-          d.longitude = +d.longitude;
-          d.room_type = d.room_type;
-          // Add any additional processing you need for other columns
-        });
-        setData(data); // Set the state to the new data
+  const [dataAll, setData] = useState(null);
+
+  useEffect(() => {
+    csv(csvPath).then(data => {
+      data.forEach(d => {
+        // Convert latitude and longitude from strings to numbers
+        d.latitude = +d.latitude;
+        d.longitude = +d.longitude;
+        d.room_type = d.room_type;
+        // Add any additional processing you need for other columns
       });
-    }, [csvPath]);
-  
-    return dataAll;
-  }
+      setData(data); // Set the state to the new data
+    });
+  }, [csvPath]);
+  // console.log(dataAll);
+  return dataAll;
+}
 
 function useMap(jsonPath) {
-    const [data, setData] = React.useState(null);
-    React.useEffect(() => {
-        json(jsonPath).then(geoJsonData => {
-            setData(geoJsonData);
-        })
-    }, []);
-    return data;
+  const [data, setData] = React.useState(null);
+  React.useEffect(() => {
+    json(jsonPath).then(geoJsonData => {
+      setData(geoJsonData);
+    })
+  }, []);
+  return data;
 }
 
 const useNeighborhoods = (csvPath) => {
-    const [neighborhoods, setNeighborhoods] = useState(null);
+  const [neighborhoods, setNeighborhoods] = useState(null);
 
-  
-    useEffect(() => {
-      csv(csvPath).then(data => {
-        const grouped = data.reduce((acc, row) => {
-          if (!acc[row.neighbourhood_group]) {
-            acc[row.neighbourhood_group] = [];
-          }
-          acc[row.neighbourhood_group].push(row.neighbourhood);
-          return acc;
-        }, {});
-        setNeighborhoods(grouped);
-      });
-    }, [csvPath]);
-  
-    return neighborhoods;
+
+  useEffect(() => {
+    csv(csvPath).then(data => {
+      const grouped = data.reduce((acc, row) => {
+        if (!acc[row.neighbourhood_group]) {
+          acc[row.neighbourhood_group] = [];
+        }
+        acc[row.neighbourhood_group].push(row.neighbourhood);
+        return acc;
+      }, {});
+      setNeighborhoods(grouped);
+    });
+  }, [csvPath]);
+
+  return neighborhoods;
+};
+
+
+
+function Airbnb() {
+  const [selectedRegion, setSelectedRegion] = React.useState(null);
+  const listings = useData(listingUrl);
+
+  const neighborhoods = useNeighborhoods(neighborhoodsUrl);
+
+  const maps = useMap(mapUrl);
+
+  if (!listings || !neighborhoods || !maps) {
+    return <pre>Loading...</pre>;
   };
+  // console.log("checking");
+
+  // console.log(neighborhoods);
 
 
-
-function Airbnb(){
-    const barchart_width = 350;
-    const barchart_height = 400;
-    const barchart_margin = { top: 10, bottom: 50, left: 130, right: 10 };
-    const barchart_inner_width = barchart_width - barchart_margin.left - barchart_margin.right;
-    const barchart_inner_height = barchart_height - barchart_margin.top - barchart_margin.bottom;
-    const map_width = 500;
-    const map_height = 400;
-    const hub_width = 400;
-    const hub_height = 400;
-    const [selectedRegion, setSelectedRegion] = React.useState(null);
-
-
-    const listings = useData(listingUrl);
-
-    const neighborhoods = useNeighborhoods(neighborhoodsUrl);
-
-    const maps = useMap(mapUrl);
-
-    if (!listings || !neighborhoods || !maps) {
-        return <pre>Loading...</pre>;
-    };
-    console.log("checking");
-
-    console.log(neighborhoods);
-
-    
-    return (
+  return (
     <>
-    <h1 style={{ color: 'white', fontFamily: "'Dancing Script', cursive" }}>Airbnb NYC</h1>   
-    {/* <div className="container"> */}
-        <div className="row no-gutters">
-                <div className="col-md-6 p-0" style={{ height: '100vh' }}>
-                    {/* <NYCMap width={window.innerWidth / 2} height={window.innerHeight} neighborhoods={map} /> */}
-                    <GoogleMap apikey={"AIzaSyC9S-iJQ8QRS7DTKBnKvPDsPSHFiCgl42Q"} listings={listings} selectedRegion={selectedRegion} regionGeoJSON={maps} />
-                </div>
-            <div className="col-md-6">
-                <Sidebar setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} listings={listings} neighborhoods={neighborhoods}/>
-            </div>
+      <h1 style={{ color: 'white', fontFamily: "'Dancing Script', cursive" }}>Airbnb NYC</h1>
+      {/* <div className="container"> */}
+      <div className="row no-gutters">
+        <div className="col-md-6 p-0" style={{ height: '100vh' }}>
+          {/* <NYCMap width={window.innerWidth / 2} height={window.innerHeight} neighborhoods={map} /> */}
+          <GoogleMap apikey={"AIzaSyC9S-iJQ8QRS7DTKBnKvPDsPSHFiCgl42Q"} listings={listings} selectedRegion={selectedRegion} regionGeoJSON={maps} />
         </div>
-    {/* </div> */}
+        <div className="col-md-6">
+          <Sidebar setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} listings={listings} neighborhoods={neighborhoods} />
+        </div>
+      </div>
 
     </>
-    );
+  );
 }
 
-ReactDOM.render(<Airbnb/ >, document.getElementById("root"));
+ReactDOM.render(<Airbnb/>, document.getElementById("root"));

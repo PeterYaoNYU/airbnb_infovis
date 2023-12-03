@@ -6,6 +6,7 @@ const RegionSelector = ({ neighborhoods, setSelectedRegion, selectedRegion }) =>
     setSelectedRegion(value);
   };
 
+  console.log('selectedRegion')
   console.log(selectedRegion)
 
 //   return (
