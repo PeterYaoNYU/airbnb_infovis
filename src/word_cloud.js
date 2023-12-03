@@ -19,13 +19,13 @@ const WordCloud = ({ words }) => {
 
     return (
     <div className="d-flex align-items-center"> 
-        <div style={{ width: '80%', height: '400px' }}> {/* Adjust size as needed */}
+        <div style={{ width: '75%', height: '400px' }}> {/* Adjust size as needed */}
             <ReactWordcloud words={wordArray} options={options} />
         </div>
 
         <div className="text-explanation p-3" style={{ flex: '1', marginRight: '20px', background: '#f5f5f5', borderRadius: '5px' }}>
           <h4>Word Cloud</h4>
-          <p>These are the most frequent words in the reviews in selected region</p>
+          <p>The most frequent words in reviews in the selected region</p>
           <p>It is helpful for identifying potential improvements</p>
         </div>
       </div>
