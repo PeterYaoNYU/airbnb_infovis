@@ -8,24 +8,31 @@ import { ListingSummary } from './listingSummary';
 import { ListingCount } from './listingCount';  
 
 import neighborhood_words from '../data/neighborhood_words_freq.json';
+import neighborhoodgroup_words from '../data/neighborhoodgroup_words_freq.json';
 
 import { WordCloud } from './word_cloud';
 
 const Sidebar = ({setSelectedRegion, selectedRegion, listings, neighborhoods}) => {
     // Replace the content below with your actual sidebar content
     let wordFrequencies;
-    if (selectedRegion && neighborhood_words[selectedRegion]) {
-        try {
-            wordFrequencies = JSON.parse(neighborhood_words[selectedRegion]);
-        } catch (error) {
-            console.error('Error parsing JSON:', error);
-            wordFrequencies = null;
-        }
-    } else {
-        // Fallback data if selectedRegion is not set or is None
-        wordFrequencies = null;
-    }
 
+    let boroughList = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"]
+
+    if (boroughList.includes(selectedRegion)) {
+        console.log(selectedRegion);
+        wordFrequencies = JSON.parse(neighborhoodgroup_words[selectedRegion]);
+        console.log(wordFrequencies);
+    } else if (selectedRegion && neighborhood_words[selectedRegion]){
+      try {
+          wordFrequencies = JSON.parse(neighborhood_words[selectedRegion]);
+      } catch (error) {
+          console.error('Error parsing JSON:', error);
+          wordFrequencies = null;
+      }
+    } else {
+      // Fallback data if selectedRegion is not set or is None
+      wordFrequencies = JSON.parse(neighborhoodgroup_words["Manhattan"]);
+    }
 
     return (
         <div style={{ maxHeight: '100vh', overflowY: 'auto' }}>
@@ -34,7 +41,7 @@ const Sidebar = ({setSelectedRegion, selectedRegion, listings, neighborhoods}) =
             <div className="container">
               <div className="row align-items-center">
                 <div className="col">
-                  <h2 className="mb-0">New York City</h2> {/* Adjust styles as needed */}
+                  <h3 className="mb-0">New York</h3> {/* Adjust styles as needed */}
                 </div>
                 <div className="col">
                   <RegionSelector neighborhoods={neighborhoods} setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} />

@@ -25,7 +25,7 @@ const ListingCount = ({ listings, selectedRegion }) => {
 
     return (
         <div className="row">
-            <h2>Total Listings: {totalListings}</h2>
+            <h3>Total: {totalListings}</h3>
             <h6>Out of {allListings}</h6>
         </div>
     );
