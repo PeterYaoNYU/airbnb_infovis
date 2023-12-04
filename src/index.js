@@ -89,8 +89,7 @@ function Airbnb() {
       {/* <div className="container"> */}
       <div className="row no-gutters">
         <div className="col-md-6 p-0" style={{ height: '100vh' }}>
-          {/* <NYCMap width={window.innerWidth / 2} height={window.innerHeight} neighborhoods={map} /> */}
-          <GoogleMap apikey={"AIzaSyC9S-iJQ8QRS7DTKBnKvPDsPSHFiCgl42Q"} listings={listings} selectedRegion={selectedRegion} regionGeoJSON={maps} />
+          {/* <GoogleMap apikey={"AIzaSyC9S-iJQ8QRS7DTKBnKvPDsPSHFiCgl42Q"} listings={listings} selectedRegion={selectedRegion} regionGeoJSON={maps} /> */}
         </div>
         <div className="col-md-6">
           <Sidebar setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} listings={listings} neighborhoods={neighborhoods} />
@@ -101,4 +100,4 @@ function Airbnb() {
   );
 }
 
-ReactDOM.render(<Airbnb/>, document.getElementById("root"));
+ReactDOM.render(<Airbnb />, document.getElementById("root"));

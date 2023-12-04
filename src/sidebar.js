@@ -2,16 +2,15 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { RegionSelector } from './regionSelector';
-
 import { ListingSummary } from './listingSummary';
-
 import { ListingCount } from './listingCount';
-import { Treemap } from "./TreeMap";
+import { TreeMapComponent } from './TreeMap2';
+import { Treemap } from './TreeMap';
+import { WordCloud } from './word_cloud';
 
 import neighborhood_words from '../data/neighborhood_words_freq.json';
 import neighborhoodgroup_words from '../data/neighborhoodgroup_words_freq.json';
 
-import { WordCloud } from './word_cloud';
 
 const Sidebar = ({ setSelectedRegion, selectedRegion, listings, neighborhoods }) => {
   // Replace the content below with your actual sidebar content
@@ -66,8 +65,14 @@ const Sidebar = ({ setSelectedRegion, selectedRegion, listings, neighborhoods })
 
       {/* Treemap */}
       <div className="pt-3">
-        <Treemap listings={listings} selectedRegion={selectedRegion} />
+        <TreeMapComponent data={listings} width={500} height={400} />
       </div>
+
+      {/* Treemap
+      <div className="pt-3">
+        <Treemap listings={listings} />
+      </div> */}
+
 
     </div>
   );
