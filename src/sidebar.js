@@ -5,7 +5,6 @@ import { RegionSelector } from './regionSelector';
 import { ListingSummary } from './listingSummary';
 import { ListingCount } from './listingCount';
 import { TreeMapComponent } from './TreeMap2';
-import { Treemap } from './TreeMap';
 import { WordCloud } from './word_cloud';
 
 import neighborhood_words from '../data/neighborhood_words_freq.json';
@@ -65,7 +64,7 @@ const Sidebar = ({ setSelectedRegion, selectedRegion, listings, neighborhoods })
 
       {/* Treemap */}
       <div className="pt-3">
-        <TreeMapComponent data={listings} width={500} height={400} />
+        <TreeMapComponent data={listings} width={500} height={400} selectedRegion={selectedRegion} />
       </div>
 
       {/* Treemap
