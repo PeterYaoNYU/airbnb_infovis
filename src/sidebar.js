@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { RegionSelector } from './regionSelector';
 import { ListingSummary } from './listingSummary';
 import { ListingCount } from './listingCount';
-import { TreeMapComponent } from './TreeMap2';
+import { TreeMapComponent } from './TreeMap';
 import { WordCloud } from './word_cloud';
 
 import neighborhood_words from '../data/neighborhood_words_freq.json';
