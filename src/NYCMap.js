@@ -9,19 +9,30 @@ const GoogleMap = ({ apikey, listings, selectedRegion, regionGeoJSON }) => {
   const nyuCoordinates = { lat: 40.7291, lng: -73.9965 };
 
   useEffect(() => {
-    async function loadGoogleMaps() {
-      const googleMapScript = document.createElement('script');
-      googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${apikey}&libraries=places&language=en`;
-      googleMapScript.async = true;
-      googleMapScript.defer = true;
-      document.body.appendChild(googleMapScript);
 
-      return new Promise((resolve) => {
-        googleMapScript.addEventListener('load', resolve);
-      });
-    }
+    let isMounted = true; // Track if the component is mounted
 
-    loadGoogleMaps().then(() => {
+    const loadScript = () => {
+      const mapScriptUrl = `https://maps.googleapis.com/maps/api/js?key=${apikey}&libraries=places&language=en`;
+      const scriptExists = document.querySelector(`script[src="${mapScriptUrl}"]`);
+      if (!scriptExists) {
+        const googleMapScript = document.createElement('script');
+        googleMapScript.src = mapScriptUrl;
+        googleMapScript.async = true;
+        googleMapScript.defer = true;
+        document.body.appendChild(googleMapScript);
+
+        googleMapScript.onload = () => {
+          if (isMounted) {
+            initializeMap();
+          }
+        };
+      } else {
+        initializeMap();
+      }
+    };
+
+    const initializeMap = () => {
       const map = new window.google.maps.Map(googleMapRef.current, {
         zoom: 13,
         center: { lat: 40.7291, lng: -73.9965 },
@@ -29,8 +40,32 @@ const GoogleMap = ({ apikey, listings, selectedRegion, regionGeoJSON }) => {
         zoomControl: true,
       });
       setGoogleMap(map);
-    });
-  }, [apikey]);
+    };
+
+    loadScript();
+
+    // Cleanup function to set isMounted to false when the component unmounts
+    return () => {
+      isMounted = false;
+    };
+  }, [apikey]); // Only run the effect if the apikey changes
+
+  //   const googleMapScript = document.createElement('script');
+  //   googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${apikey}&libraries=places&language=en`;
+  //   googleMapScript.async = true;
+  //   googleMapScript.defer = true;
+  //   window.document.body.appendChild(googleMapScript);
+
+  //   googleMapScript.addEventListener('load', () => {
+  //     const map = new window.google.maps.Map(googleMapRef.current, {
+  //       zoom: 13,
+  //       center: nyuCoordinates,
+  //       disableDefaultUI: false,
+  //       zoomControl: true,
+  //     });
+  //     setGoogleMap(map);
+  //   });
+  // }, [apikey]);
 
 
   useEffect(() => {
